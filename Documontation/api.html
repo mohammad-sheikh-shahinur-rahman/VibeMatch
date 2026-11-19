@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeMatch Backend REST API Reference</title>
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #080b11;
+            --card-bg: #0f1524;
+            --sidebar-bg: #0c101a;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --cyan: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.15);
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.15);
+            --amber: #f59e0b;
+            --amber-glow: rgba(245, 158, 11, 0.15);
+            --rose: #f43f5e;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            z-index: 50;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+        .nav-section-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+            margin: 14px 0 6px 8px;
+            font-weight: 700;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover { color: var(--text-primary); background-color: rgba(255, 255, 255, 0.03); }
+        .nav-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.05);
+        }
+
+        .sidebar-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .support-card p { font-size: 0.85rem; margin-bottom: 8px; color: var(--text-secondary); }
+        .support-links { display: flex; gap: 8px; justify-content: center; }
+        .support-link {
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 6px 10px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 40px 60px;
+            max-width: 1200px;
+        }
+
+        header { margin-bottom: 36px; }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .badge.primary { background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.25); }
+        .badge.emerald { background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.25); }
+        .badge.amber { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25); }
+        .badge.rose { background: rgba(244, 63, 94, 0.12); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.25); }
+
+        header h1 {
+            font-size: 2.3rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header p { color: var(--text-secondary); font-size: 1.05rem; }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h3 { font-size: 1.15rem; margin: 24px 0 12px 0; color: #e2e8f0; }
+        .card p { color: var(--text-secondary); margin-bottom: 14px; font-size: 0.95rem; }
+
+        /* Method Badges */
+        .method {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 0.78rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-right: 8px;
+            text-transform: uppercase;
+        }
+        .method.get { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .method.post { background: rgba(99, 102, 241, 0.15); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.3); }
+        .method.put { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .method.delete { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+        .endpoint-row {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+            transition: var(--transition-smooth);
+        }
+        .endpoint-row:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .endpoint-path {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .endpoint-auth {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #94a3b8;
+        }
+        .endpoint-auth.user { background: rgba(6, 182, 212, 0.12); color: #22d3ee; }
+        .endpoint-auth.admin { background: rgba(244, 63, 94, 0.12); color: #fb7185; }
+
+        .code-block {
+            background-color: #05070c;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 10px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.84rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+            line-height: 1.45;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo-area">
+            <img src="images/logo.png" alt="VibeMatch Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: cover;">
+            <div class="logo-text">VibeMatch Docs</div>
+        </div>
+
+                        <nav class="nav-menu">
+            <a href="screens.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                App & Admin Screens
+            </a>
+            <div class="nav-section-title">Deployment & Setup</div>
+            <a href="index.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                Hosting Web Setup
+            </a>
+            <a href="vps.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                VPS Web Setup
+            </a>
+            <a href="flutter.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                Flutter App Setup
+            </a>
+            <div class="nav-section-title">Developer Guides</div>
+            <a href="backend-setup.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" /></svg>
+                Backend API Setup
+            </a>
+            <a href="env.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                Environment (.env)
+            </a>
+            <a href="api.html" class="nav-btn active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Backend REST API
+            </a>
+            <a href="socket.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                Socket.IO & WebRTC
+            </a>
+            <div class="nav-section-title">Administration & Config</div>
+            <a href="admin-guide.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                Admin & Monetization
+            </a>
+            <a href="firebase.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" /></svg>
+                Firebase & Push Auth
+            </a>
+            <a href="faq.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Troubleshooting & FAQ
+            </a>
+            <a href="upgrade.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                Upgrade Guide
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="support-card">
+                <p>Need Technical Help?</p>
+                <div class="support-links">
+                    <a href="https://wa.me/212724328337" target="_blank" class="support-link">WhatsApp</a>
+                    <a href="mailto:businessboussetta@gmail.com" class="support-link">Email</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <header>
+            <div class="badge primary">API Documentation</div>
+            <h1>Backend REST API Reference</h1>
+            <p>Complete documentation of HTTP endpoints, authentication schemas, request bodies, and JSON response models for developer integration and platform extensions.</p>
+        </header>
+
+        <!-- Authentication Header Card -->
+        <div class="card">
+            <h2>🔑 Authentication & Headers</h2>
+            <p>Authenticated endpoints require an HTTP <code>Authorization</code> header containing the JSON Web Token returned upon login or registration:</p>
+            <div class="code-block">
+Authorization: Bearer &lt;YOUR_JWT_TOKEN&gt;
+Content-Type: application/json
+Accept: application/json
+            </div>
+        </div>
+
+        <!-- Section 1: Authentication Endpoints -->
+        <div class="card">
+            <h2>1. Authentication Endpoints (<code>/api/auth/*</code>)</h2>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/auth/register</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Register a new user account with email, username, and password.</p>
+                <strong>Request Body:</strong>
+                <div class="code-block">{ "email": "alex@example.com", "username": "alex99", "password": "Password123!", "name": "Alex", "gender": "male", "country": "US" }</div>
+                <strong>Response (200 OK):</strong>
+                <div class="code-block">{ "token": "eyJhbGciOi...", "user": { "id": "usr_...", "username": "alex99", "name": "Alex", "gems": 100, "isVip": false } }</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/auth/login</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Authenticate existing user via credentials.</p>
+                <strong>Request Body:</strong>
+                <div class="code-block">{ "email": "alex@example.com", "password": "Password123!" }</div>
+                <strong>Response (200 OK):</strong>
+                <div class="code-block">{ "token": "eyJhbGciOi...", "user": { "id": "usr_...", "username": "alex99", "name": "Alex", "gems": 100 } }</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/auth/firebase</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Authenticate with a Firebase ID token (Google Sign-In or Phone SMS login).</p>
+                <strong>Request Body:</strong>
+                <div class="code-block">{ "idToken": "firebase_jwt_id_token_from_client_sdk" }</div>
+                <strong>Response (200 OK):</strong>
+                <div class="code-block">{ "token": "eyJhbGciOi...", "user": { "id": "usr_...", "username": "google_user", "name": "Google User" } }</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/auth/guest</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Instantly provision a temporary guest account for rapid trial matchmaking.</p>
+                <strong>Response (200 OK):</strong>
+                <div class="code-block">{ "token": "eyJhbGciOi...", "user": { "id": "guest_182746", "username": "guest_182746", "isGuest": true, "gems": 30 } }</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method get">GET</span><span class="endpoint-path">/api/auth/me</span></div>
+                    <span class="endpoint-auth user">User JWT</span>
+                </div>
+                <p>Fetch current authenticated user profile, wallet balance, and VIP status.</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Payments & Store Endpoints -->
+        <div class="card">
+            <h2>2. Payments & Monetization Endpoints (<code>/api/payments/*</code>)</h2>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method get">GET</span><span class="endpoint-path">/api/payments/packages</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Retrieve configured diamond coin packages with prices and bonus amounts.</p>
+                <strong>Response (200 OK):</strong>
+                <div class="code-block">[ { "id": "pkg_100", "diamonds": 100, "bonus": 10, "price": 1.99, "currency": "USD" }, { "id": "pkg_500", "diamonds": 500, "bonus": 75, "price": 7.99, "currency": "USD" } ]</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/payments/native/verify</span></div>
+                    <span class="endpoint-auth user">User JWT</span>
+                </div>
+                <p>Validate Google Play Billing or Apple StoreKit receipts server-side (Fail-closed validation).</p>
+                <strong>Request Body:</strong>
+                <div class="code-block">{ "platform": "google" | "apple", "productId": "diamonds_500", "receipt": "..." }</div>
+                <strong>Response (200 OK):</strong>
+                <div class="code-block">{ "success": true, "diamondsCredited": 575, "newBalance": 725 }</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/payments/stripe/create-checkout</span></div>
+                    <span class="endpoint-auth user">User JWT</span>
+                </div>
+                <p>Create a Stripe Checkout Session for web diamond coin purchases.</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Virtual Gifts & VIP Plans -->
+        <div class="card">
+            <h2>3. Virtual Gifts & VIP Memberships</h2>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method get">GET</span><span class="endpoint-path">/api/gifts</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Retrieve available animated gifts with their diamond coin costs.</p>
+                <strong>Response (200 OK):</strong>
+                <div class="code-block">[ { "id": "rose", "name": "Red Rose", "coinPrice": 10, "icon": "/images/gifts/rose.png" }, { "id": "sports_car", "name": "Super Car", "coinPrice": 500, "icon": "/images/gifts/car.png" } ]</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/gifts/send</span></div>
+                    <span class="endpoint-auth user">User JWT</span>
+                </div>
+                <p>Send a virtual gift to a partner during a live call or direct chat (deducts diamonds from sender).</p>
+                <strong>Request Body:</strong>
+                <div class="code-block">{ "receiverId": "usr_target_id", "giftId": "rose" }</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method get">GET</span><span class="endpoint-path">/api/vip/plans</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Fetch available VIP subscription durations (e.g., 7 days, 30 days, 365 days).</p>
+            </div>
+        </div>
+
+        <!-- Section 4: WebRTC & System Config -->
+        <div class="card">
+            <h2>4. WebRTC Infrastructure & Settings</h2>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method get">GET</span><span class="endpoint-path">/api/webrtc/ice-servers</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Returns dynamic STUN and TURN ICE server configurations for WebRTC video peers.</p>
+                <strong>Response (200 OK):</strong>
+                <div class="code-block">{ "iceServers": [ { "urls": "stun:stun.l.google.com:19302" }, { "urls": "turn:turn.example.com:3478", "username": "user", "credential": "pass" } ] }</div>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method get">GET</span><span class="endpoint-path">/api/init</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Client application initialization payload (app name, logo URL, terms URL, enabled auth methods).</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Admin Panel API -->
+        <div class="card">
+            <h2>5. Administrative Management API (<code>/api/admin/*</code>)</h2>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/admin/login</span></div>
+                    <span class="endpoint-auth">Public</span>
+                </div>
+                <p>Admin authentication with username & password (returns admin JWT).</p>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method get">GET</span><span class="endpoint-path">/api/admin/stats</span></div>
+                    <span class="endpoint-auth admin">Admin Only</span>
+                </div>
+                <p>Real-time platform metrics (active calls, online users, total registered accounts, gross revenue).</p>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method get">GET</span><span class="endpoint-path">/api/admin/users</span></div>
+                    <span class="endpoint-auth admin">Admin Only</span>
+                </div>
+                <p>Paginated user management list with search, filter, ban status, and wallet balance.</p>
+            </div>
+
+            <div class="endpoint-row">
+                <div class="endpoint-header">
+                    <div><span class="method post">POST</span><span class="endpoint-path">/api/admin/users/:id/ban</span></div>
+                    <span class="endpoint-auth admin">Admin Only</span>
+                </div>
+                <p>Toggle ban status for a user to immediately revoke access.</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)];
+  }
+  
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-2xl border border-white/5 shadow-2xl;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-[#0a0a0a] text-gray-100 antialiased;
+  }
+}
+
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(2.5);
+    opacity: 0;
+    box-shadow: 0 0 0 30px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+@keyframes sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scrollVertical {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-radar-pulse {
+  animation: radar-pulse 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.animate-scroll-vertical {
+  animation: scrollVertical 30s linear infinite;
+}
+
+.animate-scroll-vertical:hover {
+  animation-play-state: paused;
+}
+
+.radar-sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: conic-gradient(from 0deg, transparent 70%, rgba(16, 185, 129, 0.3) 100%);
+  transform-origin: 0 0;
+  animation: sweep 3s linear infinite;
+}
+
+.premium-card {
+  @apply rounded-[32px] overflow-hidden relative shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] border border-white/5 bg-[#121212] transition-all duration-500 hover:shadow-[0_20px_50px_-12px_rgba(16,185,129,0.15)];
+}
+
+@keyframes popFade {
+  0% { transform: scale(0) translate(0, 0); opacity: 0; }
+  30% { transform: scale(1.2) translate(var(--tw-translate-x), var(--tw-translate-y)); opacity: 1; }
+  50% { transform: scale(1) translate(var(--tw-translate-x), var(--tw-translate-y)); opacity: 1; }
+  80% { transform: scale(1) translate(var(--tw-translate-x), var(--tw-translate-y)); opacity: 1; }
+  100% { transform: scale(0) translate(var(--tw-translate-x), var(--tw-translate-y)); opacity: 0; }
+}
+
+
+body.in-video-call nav.sticky.bottom-0 {
+  display: none !important;
+}

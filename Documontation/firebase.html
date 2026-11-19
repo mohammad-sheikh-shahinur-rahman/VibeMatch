@@ -1,0 +1,373 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeMatch Firebase & Push Authentication Guide</title>
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #080b11;
+            --card-bg: #0f1524;
+            --sidebar-bg: #0c101a;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary: #6366f1;
+            --cyan: #06b6d4;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            z-index: 50;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+        .nav-section-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+            margin: 14px 0 6px 8px;
+            font-weight: 700;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover { color: var(--text-primary); background-color: rgba(255, 255, 255, 0.03); }
+        .nav-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.05);
+        }
+
+        .sidebar-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .support-card p { font-size: 0.85rem; margin-bottom: 8px; color: var(--text-secondary); }
+        .support-links { display: flex; gap: 8px; justify-content: center; }
+        .support-link {
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 6px 10px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 40px 60px;
+            max-width: 1200px;
+        }
+
+        header { margin-bottom: 36px; }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .badge.primary { background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.25); }
+        .badge.amber { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.25); }
+
+        header h1 {
+            font-size: 2.3rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header p { color: var(--text-secondary); font-size: 1.05rem; }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h3 { font-size: 1.15rem; margin: 24px 0 12px 0; color: #e2e8f0; }
+        .card p { color: var(--text-secondary); margin-bottom: 14px; font-size: 0.95rem; }
+
+        .code-block {
+            background-color: #05070c;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 10px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.84rem;
+            color: #e2e8f0;
+            overflow-x: auto;
+            line-height: 1.45;
+        }
+
+        .step-list {
+            padding-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .step-list li { margin-bottom: 12px; }
+        .step-list strong { color: #ffffff; }
+
+        .path-box {
+            font-family: 'Fira Code', monospace;
+            background: rgba(99, 102, 241, 0.1);
+            color: #a5b4fc;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo-area">
+            <img src="images/logo.png" alt="VibeMatch Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: cover;">
+            <div class="logo-text">VibeMatch Docs</div>
+        </div>
+
+                        <nav class="nav-menu">
+            <a href="screens.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                App & Admin Screens
+            </a>
+            <div class="nav-section-title">Deployment & Setup</div>
+            <a href="index.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                Hosting Web Setup
+            </a>
+            <a href="vps.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                VPS Web Setup
+            </a>
+            <a href="flutter.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                Flutter App Setup
+            </a>
+            <div class="nav-section-title">Developer Guides</div>
+            <a href="backend-setup.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" /></svg>
+                Backend API Setup
+            </a>
+            <a href="env.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                Environment (.env)
+            </a>
+            <a href="api.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Backend REST API
+            </a>
+            <a href="socket.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                Socket.IO & WebRTC
+            </a>
+            <div class="nav-section-title">Administration & Config</div>
+            <a href="admin-guide.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                Admin & Monetization
+            </a>
+            <a href="firebase.html" class="nav-btn active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" /></svg>
+                Firebase & Push Auth
+            </a>
+            <a href="faq.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Troubleshooting & FAQ
+            </a>
+            <a href="upgrade.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                Upgrade Guide
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="support-card">
+                <p>Need Technical Help?</p>
+                <div class="support-links">
+                    <a href="https://wa.me/212724328337" target="_blank" class="support-link">WhatsApp</a>
+                    <a href="mailto:businessboussetta@gmail.com" class="support-link">Email</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <header>
+            <div class="badge amber">Authentication & Notifications</div>
+            <h1>Firebase, Google Sign-In & FCM Push Notifications</h1>
+            <p>Step-by-step instructions detailing exactly where Google Sign-In keys, OAuth client IDs, and Firebase Cloud Messaging credentials are placed in the codebase and admin panel.</p>
+        </header>
+
+        <!-- Section 1: Creating Firebase Project -->
+        <div class="card">
+            <h2>🔥 1. Firebase Project Setup</h2>
+            <ol class="step-list">
+                <li>Go to the <a href="https://console.firebase.google.com/" target="_blank" style="color:var(--cyan);">Firebase Console</a> and click <strong>Add Project</strong> (e.g., <code>VibeMatch-App</code>).</li>
+                <li>Disable Google Analytics (or enable if desired) and create the project.</li>
+                <li>Navigate to <strong>Authentication &gt; Sign-in method</strong>. Enable <strong>Google</strong> and <strong>Phone</strong> authentication.</li>
+            </ol>
+        </div>
+
+        <!-- Section 2: Android App Configuration -->
+        <div class="card">
+            <h2>🤖 2. Android App Credentials</h2>
+            <ol class="step-list">
+                <li>In Firebase Console, click the <strong>Android icon</strong> to add an Android app.</li>
+                <li>Enter the package name: <code>com.vibematch.app</code> (or your custom package name).</li>
+                <li><strong>Add SHA-1 Fingerprint:</strong> Crucial for Google Sign-In and Phone SMS Auth. Run in your terminal:
+                    <div class="code-block">cd flutter_app/android && ./gradlew signingReport</div>
+                    Copy the <code>SHA-1</code> and <code>SHA-256</code> keys and add them to your Android app settings in Firebase Console.
+                </li>
+                <li>Download the generated <span class="path-box">google-services.json</span> file.</li>
+                <li>Place it in the Flutter codebase at:
+                    <div class="path-box">flutter_app/android/app/google-services.json</div>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Section 3: iOS App Configuration -->
+        <div class="card">
+            <h2>🍎 3. iOS App Credentials</h2>
+            <ol class="step-list">
+                <li>In Firebase Console, click <strong>Add App</strong> and choose <strong>iOS</strong>.</li>
+                <li>Enter your iOS Bundle Identifier: <code>com.vibematch.app</code>.</li>
+                <li>Download the generated <span class="path-box">GoogleService-Info.plist</span> file.</li>
+                <li>Open <code>flutter_app/ios/Runner.xcworkspace</code> in Xcode, drag and drop <span class="path-box">GoogleService-Info.plist</span> into the <code>Runner</code> folder, and check <em>Copy items if needed</em>.
+                    <div class="path-box">flutter_app/ios/Runner/GoogleService-Info.plist</div>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Section 4: Backend & Admin Panel Push Notification Setup -->
+        <div class="card">
+            <h2>🔔 4. Firebase Cloud Messaging (FCM) & Backend Setup</h2>
+            <p>To deliver real-time push notifications for incoming video calls, direct messages, and diamond gift alerts when the app is in the background:</p>
+            <ol class="step-list">
+                <li>In Firebase Console, navigate to <strong>Project Settings &gt; Service Accounts</strong>.</li>
+                <li>Click <strong>Generate New Private Key</strong>. Download the generated JSON credentials file.</li>
+                <li>Navigate to your VibeMatch Admin Panel: <span class="path-box">Admin Panel &gt; Settings &gt; Firebase & Auth</span>.</li>
+                <li>Paste the <strong>Firebase Project ID</strong> and upload/paste your <strong>Firebase Service Account JSON</strong>.</li>
+                <li>Click <strong>Save Firebase Settings</strong>. The backend initializes the Firebase Admin SDK dynamically.</li>
+            </ol>
+        </div>
+
+        <!-- Section 5: Verification & Delivery Testing -->
+        <div class="card">
+            <h2>✅ 5. How to Verify Push Notifications are Delivered</h2>
+            <ol class="step-list">
+                <li>Install the built APK or run <code>flutter run</code> on a physical device.</li>
+                <li>Log in to the app. When prompted, grant the <strong>Notification Permission</strong> dialog.</li>
+                <li>Send the app to the background (press Home button or lock the screen).</li>
+                <li>From another account (or test user), send a direct text message or start a video call.</li>
+                <li><strong>Expected Result:</strong> An instant push notification banner with sound and partner avatar appears in the Android notification shade / iOS Notification Center.</li>
+                <li><strong>Log Verification:</strong> Check device logs via <code>adb logcat -s "FLTFireMsgService"</code> to inspect token registration.</li>
+            </ol>
+        </div>
+    </main>
+</body>
+</html>

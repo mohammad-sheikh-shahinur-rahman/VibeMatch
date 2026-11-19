@@ -1,0 +1,395 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeMatch Admin Operations & Monetization Manual</title>
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #080b11;
+            --card-bg: #0f1524;
+            --sidebar-bg: #0c101a;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary: #6366f1;
+            --cyan: #06b6d4;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            z-index: 50;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; flex-grow: 1; }
+        .nav-section-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+            margin: 14px 0 6px 8px;
+            font-weight: 700;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover { color: var(--text-primary); background-color: rgba(255, 255, 255, 0.03); }
+        .nav-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.05);
+        }
+
+        .sidebar-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .support-card p { font-size: 0.85rem; margin-bottom: 8px; color: var(--text-secondary); }
+        .support-links { display: flex; gap: 8px; justify-content: center; }
+        .support-link {
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 6px 10px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 40px 60px;
+            max-width: 1200px;
+        }
+
+        header { margin-bottom: 36px; }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .badge.primary { background: rgba(99, 102, 241, 0.12); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.25); }
+        .badge.emerald { background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.25); }
+
+        header h1 {
+            font-size: 2.3rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header p { color: var(--text-secondary); font-size: 1.05rem; }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card h3 { font-size: 1.15rem; margin: 24px 0 12px 0; color: #e2e8f0; }
+        .card p { color: var(--text-secondary); margin-bottom: 14px; font-size: 0.95rem; }
+
+        .screenshot-container {
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #000;
+        }
+        .screenshot-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .screenshot-caption {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .step-list {
+            padding-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .step-list li { margin-bottom: 10px; }
+        .step-list strong { color: #ffffff; }
+
+        .path-badge {
+            font-family: 'Fira Code', monospace;
+            background: rgba(99, 102, 241, 0.12);
+            color: #a5b4fc;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo-area">
+            <img src="images/logo.png" alt="VibeMatch Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: cover;">
+            <div class="logo-text">VibeMatch Docs</div>
+        </div>
+
+                        <nav class="nav-menu">
+            <a href="screens.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                App & Admin Screens
+            </a>
+            <div class="nav-section-title">Deployment & Setup</div>
+            <a href="index.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                Hosting Web Setup
+            </a>
+            <a href="vps.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                VPS Web Setup
+            </a>
+            <a href="flutter.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                Flutter App Setup
+            </a>
+            <div class="nav-section-title">Developer Guides</div>
+            <a href="backend-setup.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" /></svg>
+                Backend API Setup
+            </a>
+            <a href="env.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                Environment (.env)
+            </a>
+            <a href="api.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Backend REST API
+            </a>
+            <a href="socket.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                Socket.IO & WebRTC
+            </a>
+            <div class="nav-section-title">Administration & Config</div>
+            <a href="admin-guide.html" class="nav-btn active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                Admin & Monetization
+            </a>
+            <a href="firebase.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" /></svg>
+                Firebase & Push Auth
+            </a>
+            <a href="faq.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Troubleshooting & FAQ
+            </a>
+            <a href="upgrade.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                Upgrade Guide
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="support-card">
+                <p>Need Technical Help?</p>
+                <div class="support-links">
+                    <a href="https://wa.me/212724328337" target="_blank" class="support-link">WhatsApp</a>
+                    <a href="mailto:businessboussetta@gmail.com" class="support-link">Email</a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <header>
+            <div class="badge primary">Operations Manual</div>
+            <h1>Admin Panel Operations & Monetization Guide</h1>
+            <p>A complete walkthrough of daily administration tasks: user moderation, banning abusive members, setting diamond coin package prices, managing VIP tiers, and configuring payment gateways.</p>
+        </header>
+
+        <!-- Accessing Admin Panel -->
+        <div class="card">
+            <h2>🔑 Accessing the Admin Dashboard</h2>
+            <p>The administration panel is accessible directly from any web browser by navigating to the <code>/admin</code> path of your deployed domain (e.g., <code>https://yourdomain.com/admin</code>).</p>
+            <p>Log in with the master administrator credentials created during the initial setup wizard.</p>
+            <div class="screenshot-container">
+                <img src="images/screens/10_screenshot.png" alt="Admin Dashboard Overview">
+                <div class="screenshot-caption">Figure 1: Admin Telemetry Dashboard displaying live online users, active calls, registered members, and revenue graphs.</div>
+            </div>
+        </div>
+
+        <!-- Section 1: User Management & Moderation -->
+        <div class="card">
+            <h2>👤 1. User Management & Moderation</h2>
+            <p>Navigate to <span class="path-badge">Admin &gt; Users</span> to inspect all registered accounts.</p>
+            <div class="screenshot-container">
+                <img src="images/screens/11_screenshot.png" alt="User Management">
+                <div class="screenshot-caption">Figure 2: User Accounts Table with instant search, filter, and balance management.</div>
+            </div>
+            <ul class="step-list">
+                <li><strong>Banning / Unbanning an Abusive User:</strong> Find the user in the table, click the red <strong>Ban</strong> action button (or toggle the status switch). The user's JWT token is instantly invalidated and active video calls are closed.</li>
+                <li><strong>Adjusting Diamond Wallet Balance:</strong> Click the edit icon next to a user. Enter the new coin balance (e.g., to grant bonus diamonds for promotional support or refund a purchase) and click <strong>Save Changes</strong>.</li>
+                <li><strong>Granting VIP Membership Status:</strong> In the user edit modal, toggle the <strong>VIP Status</strong> switch and pick an expiration date to grant premium matchmaking privileges.</li>
+            </ul>
+        </div>
+
+        <!-- Section 2: Reviewing Abuse Reports -->
+        <div class="card">
+            <h2>🛡️ 2. Reviewing Abuse Reports</h2>
+            <p>Navigate to <span class="path-badge">Admin &gt; Reports</span> to review flagged members reported during live video chats.</p>
+            <ul class="step-list">
+                <li>Reports display the <strong>Reporter ID</strong>, <strong>Reported User</strong>, <strong>Reason</strong> (e.g., nudity, harassment, spam), and exact timestamp.</li>
+                <li>Click <strong>Inspect Profile</strong> to examine previous warning history.</li>
+                <li>Click <strong>Ban Offender</strong> to ban the reported user, or click <strong>Dismiss Report</strong> if the report is invalid.</li>
+            </ul>
+        </div>
+
+        <!-- Section 3: Configuring Diamond Packages & Pricing -->
+        <div class="card">
+            <h2>💎 3. Monetization: Diamond Coin Packages</h2>
+            <div style="background-color: rgba(245, 158, 11, 0.1); border-left: 4px solid var(--amber); padding: 15px; margin: 15px 0; border-radius: 4px;">
+                <strong style="color: var(--amber);">Important Note for Buyers:</strong> You are fully responsible for any transaction fees, processing rates, or service costs associated with third-party payment gateways (such as Google Play Billing, Apple In-App Purchases, Stripe, or PayPal) and cloud infrastructure usage (such as Firebase costs or VPS hosting). VibeMatch software does not cover these third-party operating expenses.
+            </div>
+            <p>VibeMatch uses a diamond coin economy where users spend diamonds on animated gifts and VIP filters.</p>
+            <p>Navigate to <span class="path-badge">Admin &gt; Settings &gt; Coin Packages</span> to manage packages:</p>
+            <div class="screenshot-container">
+                <img src="images/screens/03_screenshot.png" style="max-width: 450px; margin: 0 auto;" alt="Coin Store">
+                <div class="screenshot-caption">Figure 3: In-app diamond coin packages as rendered to users on Android and iOS.</div>
+            </div>
+            <ul class="step-list">
+                <li><strong>Adding a Package:</strong> Click <strong>Add Coin Package</strong>. Enter the Package Name (e.g., "Popular Diamond Chest"), Diamond Count (e.g. 500), Bonus Diamonds (e.g. 50), and Price in USD (e.g. 4.99).</li>
+                <li><strong>Setting Store Product ID:</strong> For mobile in-app purchases, set the <strong>Google Product ID</strong> and <strong>Apple Product ID</strong> to match the in-app purchase identifier configured in Google Play Console and App Store Connect (e.g., <code>diamonds_500</code>).</li>
+                <li>Click <strong>Save Packages</strong> to immediately publish changes to mobile apps and the web store without recompiling.</li>
+            </ul>
+        </div>
+
+        <!-- Section 4: VIP Subscriptions Setup -->
+        <div class="card">
+            <h2>⭐ 4. VIP Subscription Plans & Durations</h2>
+            <p>Navigate to <span class="path-badge">Admin &gt; Settings &gt; VIP Membership</span> to manage subscription tiers:</p>
+            <ul class="step-list">
+                <li><strong>Duration Options:</strong> Configure plans such as <strong>7 Days (Weekly)</strong>, <strong>30 Days (Monthly)</strong>, and <strong>365 Days (Yearly)</strong>.</li>
+                <li><strong>Pricing Mode:</strong> Set whether VIP can be purchased via direct payment (Stripe/PayPal/IAP) or unlocked using in-app diamonds.</li>
+                <li><strong>Exclusive Perks:</strong> VIP members unlock gender filter matchmaking (connecting only with female or male partners), region filter selection, and an exclusive glowing golden badge on their profile avatar.</li>
+            </ul>
+        </div>
+
+        <!-- Section 5: Connecting Payment Gateways -->
+        <div class="card">
+            <h2>💳 5. Connecting Payment Gateways</h2>
+            <p>Navigate to <span class="path-badge">Admin &gt; Settings &gt; Payments</span> to input your gateway credentials:</p>
+            <div class="screenshot-container">
+                <img src="images/screens/12_screenshot.png" alt="Admin Settings">
+                <div class="screenshot-caption">Figure 4: Payment Gateways and System Configuration Center.</div>
+            </div>
+            <ul class="step-list">
+                <li><strong>Stripe:</strong> Toggle Stripe to <strong>Enabled</strong>. Enter your <code>Publishable Key</code> (<code>pk_live_...</code>) and <code>Secret Key</code> (<code>sk_live_...</code>). Enter the Stripe Webhook signing secret.</li>
+                <li><strong>PayPal:</strong> Toggle PayPal to <strong>Enabled</strong>. Choose Environment (<code>Live</code> or <code>Sandbox</code>). Enter your <code>PayPal Client ID</code> and <code>PayPal Secret Key</code> from developer.paypal.com.</li>
+                <li><strong>Razorpay:</strong> Enter <code>Key ID</code> and <code>Key Secret</code> for instant checkout in supported regions.</li>
+                <li>Click <strong>Save Payment Settings</strong>. The checkout buttons will immediately appear in the mobile store bottom sheet.</li>
+            </ul>
+        </div>
+    </main>
+</body>
+</html>

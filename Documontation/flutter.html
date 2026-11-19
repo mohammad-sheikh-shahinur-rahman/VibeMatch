@@ -1,0 +1,626 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeMatch Hosting Web Setup</title>
+    <!-- Import Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #080b11;
+            --card-bg: #0f1524;
+            --sidebar-bg: #0c101a;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --cyan: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.15);
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.15);
+            --amber: #f59e0b;
+            --amber-glow: rgba(245, 158, 11, 0.15);
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Sidebar Navigation */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 50;
+            padding: 24px;
+            overflow-y: auto;
+}
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--accent-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .nav-section-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; margin: 14px 0 6px 8px; font-weight: 700; }
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.05);
+        }
+
+        .nav-btn svg {
+            transition: var(--transition-smooth);
+        }
+
+        .nav-btn.active svg {
+            transform: scale(1.1);
+            color: #a855f7;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .support-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .support-card p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .support-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .support-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .support-link.whatsapp {
+            background-color: #25d366;
+            color: black;
+        }
+
+        .support-link.whatsapp:hover {
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .support-link.email {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .support-link.email:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content Area */
+        main {
+            margin-left: 280px;
+            flex-grow: 1;
+            padding: 40px;
+            max-width: 1200px;
+            transition: var(--transition-smooth);
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .badge.primary {
+            background-color: var(--primary-glow);
+            color: #818cf8;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #9ca3af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 800px;
+        }
+
+        /* Step Card Styling */
+        .step-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-smooth);
+        }
+
+        .step-card:hover {
+            border-color: rgba(99, 102, 241, 0.2);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.03);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1.1rem;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .step-title {
+            font-size: 1.4rem;
+            color: #ffffff;
+        }
+
+        .step-content {
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+        }
+
+        .step-content p {
+            margin-bottom: 16px;
+        }
+
+        /* Image Display Grid */
+        .image-showcase {
+            margin: 24px 0;
+            background-color: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .image-showcase img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            transition: var(--transition-smooth);
+            border: 1px solid var(--border-color);
+        }
+
+        .image-showcase img:hover {
+            transform: scale(1.01);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .image-caption {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 992px) {
+            body {
+                flex-direction: column;
+            }
+            aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 50;
+            padding: 24px;
+            overflow-y: auto;
+}
+            .logo-area {
+                margin-bottom: 20px;
+            }
+            .nav-section-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; margin: 14px 0 6px 8px; font-weight: 700; }
+        .nav-menu {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .nav-btn {
+                width: auto;
+                flex: 1 1 45%;
+                justify-content: center;
+            }
+            main {
+                margin-left: 0;
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav-btn {
+                flex: 1 1 100%;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .step-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo-area">
+            <img src="images/logo.png" alt="VibeMatch Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);">
+            <div class="logo-text">VibeMatch Panel</div>
+        </div>
+
+        
+            <a href="screens.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                App & Admin Screens
+            </a>
+            <a href="index.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                Hosting Web Setup
+            </a>
+            <a href="vps.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                VPS Web Setup
+            </a>
+            
+            <a href="flutter.html" class="nav-btn active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                Flutter App Setup
+            </a>
+            <a href="upgrade.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                Upgrade Guide
+            </a>
+            <a href="faq.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                FAQ & Troubleshooting
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="support-card">
+                <p>Need Technical Help?</p>
+                <div class="support-links">
+                    <a href="https://wa.me/212724328337" target="_blank" class="support-link whatsapp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.977h.004c4.368 0 7.926-3.559 7.93-7.934A7.897 7.897 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.69-4.98c-.202-.101-1.194-.59-1.378-.656-.185-.067-.32-.1-.455.1-.134.2-.52.656-.637.79-.116.135-.234.15-.435.05-.201-.1-.85-.314-1.62-.999-.598-.534-1.003-1.196-1.121-1.396-.118-.2-.012-.307.088-.407.09-.09.201-.235.302-.353.1-.117.133-.2.201-.336.069-.135.034-.253-.017-.354-.052-.102-.455-1.099-.623-1.503-.164-.397-.32-.343-.455-.35-.127-.007-.274-.007-.422-.007-.148 0-.389.055-.593.278-.204.223-.78.762-.78 1.857 0 1.094.797 2.15 1.083 2.531.286.381 1.567 2.393 3.799 3.359.53.23 0 .43.9.725.22.072.483.18.663.2.18.02.66-.27 1.14-.665.48-.395.48-.665.36-.885-.12-.22-.389-.355-.59-.456z"/>
+                        </svg>
+                        WhatsApp Support
+                    </a>
+                    <a href="mailto:businessboussetta@gmail.com" class="support-link email">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+                        </svg>
+                        Email Support
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <header>
+            <div class="badge primary">Mobile Apps</div>
+            <h1>Flutter App Setup Guide</h1>
+            <p>Follow these step-by-step instructions to configure, brand, and build the VibeMatch Android and iOS apps using Flutter. This guide covers everything from prerequisites to Firebase configuration and app publishing.</p>
+        </header>
+
+        <!-- Mandatory Third-Party Disclaimer Box -->
+        <div class="step-card" style="border: 1px solid var(--amber); background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(15, 21, 36, 1) 100%);">
+            <div class="step-header">
+                <h2 class="step-title" style="color: #f59e0b;">⚠️ Important Third-Party Services Disclaimer & Usage Costs</h2>
+            </div>
+            <div class="step-content">
+                <p>Please note that operating VibeMatch requires external third-party services. These are independent external providers, and the buyer is solely responsible for creating their own developer accounts and covering any associated usage fees, subscriptions, or transaction costs:</p>
+                <ul style="margin-left: 20px;">
+                    <li><strong>MongoDB:</strong> External database provider (e.g. MongoDB Atlas or VPS instance). Free tier is available; high traffic may require upgraded tiers.</li>
+                    <li><strong>Payment Gateways (Stripe, PayPal, Razorpay):</strong> Charge standard merchant processing fees per transaction according to their merchant terms.</li>
+                    <li><strong>Firebase (Google LLC):</strong> Used for Phone SMS Authentication and Push Notifications. Subject to Google Firebase pricing after free monthly quotas.</li>
+                    <li><strong>Google Play Console & Apple Developer:</strong> Required for distributing mobile apps ( one-time for Google Play, /year for Apple Developer). Standard platform fees apply to in-app purchases.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Prerequisites -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2 class="step-title">Prerequisites & Requirements</h2>
+            </div>
+            <div class="step-content">
+                <p>Before you begin, ensure you have the following installed on your machine to avoid version compatibility issues:</p>
+                <ul>
+                    <li><strong>Flutter SDK:</strong> We recommend using the latest stable release of Flutter (v3.22+).</li>
+                    <li><strong>Android Studio:</strong> For building the Android App (APK/AAB).</li>
+                    <li><strong>Xcode:</strong> (Mac only) Required for building the iOS App.</li>
+                    <li><strong>Code Editor:</strong> VS Code or Android Studio.</li>
+                </ul>
+                <div class="info-box" style="background-color: var(--primary-glow); padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid var(--primary);">
+                    <p>Open the <code>flutter_app</code> folder in your code editor and run <code>flutter pub get</code> in the terminal to install all dependencies.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configure Backend -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2 class="step-title">Change API Base URL</h2>
+            </div>
+            <div class="step-content">
+                <p>The app needs to communicate with your VibeMatch backend server. You must update the API URL.</p>
+                <ol style="margin-left: 20px;">
+                    <li>Navigate to <code>lib/core/config/app_config.dart</code>.</li>
+                    <li>Find the <code>apiBaseUrl</code> constant.</li>
+                    <li>Replace the placeholder domain with your actual backend domain. Example: <code>https://yourdomain.com/api</code></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Branding -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2 class="step-title">App Customization (Name, Icon, Package)</h2>
+            </div>
+            <div class="step-content">
+                <p>Follow these steps to rebrand the app for your own business:</p>
+                
+                <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--cyan);">Change App Name</h3>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Android:</strong> Open <code>android/app/src/main/AndroidManifest.xml</code> and update <code>android:label="YourAppName"</code>.</li>
+                    <li><strong>iOS:</strong> Open <code>ios/Runner/Info.plist</code> and update the <code>CFBundleDisplayName</code> and <code>CFBundleName</code> values.</li>
+                </ul>
+
+                <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--cyan);">Change Package Name (Bundle ID)</h3>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Android:</strong> Open <code>android/app/build.gradle</code> and change <code>applicationId "com.yourcompany.appname"</code>. (Make sure to also rename the folder structure in <code>src/main/kotlin/...</code> to match if required).</li>
+                    <li><strong>iOS:</strong> Open Xcode, click on the Runner project, select the General tab, and update the <strong>Bundle Identifier</strong>.</li>
+                </ul>
+
+                <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--cyan);">Change App Icon</h3>
+                <ul style="margin-left: 20px;">
+                    <li>You can use tools like <a href="https://appicon.co/" target="_blank" style="color: var(--primary);">AppIcon.co</a> to generate your icons.</li>
+                    <li><strong>Android:</strong> Replace the icon folders in <code>android/app/src/main/res/mipmap-*</code>.</li>
+                    <li><strong>iOS:</strong> Replace the icons in Xcode under <code>Assets.xcassets > AppIcon</code>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Firebase Configuration -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2 class="step-title">Firebase Configuration</h2>
+            </div>
+            <div class="step-content">
+                <p>Firebase is required for Push Notifications, Google Sign-in, and Phone Authentication.</p>
+                
+                <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--emerald);">1. Create a Firebase Project</h3>
+                <ol style="margin-left: 20px;">
+                    <li>Go to <a href="https://console.firebase.google.com/" target="_blank" style="color: var(--primary);">Firebase Console</a> and click <strong>Add Project</strong>.</li>
+                    <li>Enter your project name and continue. Disable Google Analytics if you don't need it, then click <strong>Create Project</strong>.</li>
+                </ol>
+
+                <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--emerald);">2. Add Android App to Firebase</h3>
+                <ol style="margin-left: 20px;">
+                    <li>Click the Android icon to add an Android app.</li>
+                    <li>Enter your exact <strong>Package Name</strong> (from step 3).</li>
+                    <li>Enter your <strong>SHA-1 Key</strong> (Required for Google Login and Phone Auth). You can generate this using the <code>keytool</code> command or via Gradle in Android Studio.</li>
+                    <li>Download the <code>google-services.json</code> file and place it in your <code>flutter_app/android/app/</code> directory.</li>
+                </ol>
+
+                <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--emerald);">3. Add iOS App to Firebase</h3>
+                <ol style="margin-left: 20px;">
+                    <li>Click the iOS icon to add an iOS app.</li>
+                    <li>Enter your exact <strong>Bundle ID</strong> (from step 3).</li>
+                    <li>Download the <code>GoogleService-Info.plist</code> file.</li>
+                    <li>Open <code>ios/Runner.xcworkspace</code> in Xcode, drag and drop the plist file into the Runner folder. Make sure "Copy items if needed" is checked.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Build Android -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <h2 class="step-title">Build & Release Android App</h2>
+            </div>
+            <div class="step-content">
+                <p>To generate the final Android app for testing or Play Store upload:</p>
+                <h4 style="margin-top: 12px; margin-bottom: 6px; color: var(--emerald);">Keystore & Release Signing Configuration:</h4>
+                <p>The Android project is pre-configured with a production release signing configuration loaded via <code>android/key.properties</code>. A sample template is available at <code>android/key.properties.example</code>:</p>
+                <pre style="background: #1e293b; padding: 12px; border-radius: 8px; font-size: 13px; color: #e2e8f0; margin: 10px 0;">storePassword=your_keystore_password
+keyPassword=your_key_password
+keyAlias=your_key_alias
+storeFile=upload-keystore.jks</pre>
+                <p>To generate your own official release keystore for Google Play:</p>
+                <code style="background: #1e293b; padding: 5px; border-radius: 5px; display: block; margin: 5px 0;">keytool -genkey -v -keystore android/app/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload</code>
+                
+                <h4 style="margin-top: 15px; margin-bottom: 6px; color: var(--emerald);">Build Commands:</h4>
+                <ol style="margin-left: 20px;">
+                    <li>Open the terminal in the <code>flutter_app</code> folder.</li>
+                    <li>To build an APK for manual testing, run: <br>
+                        <code style="background: #1e293b; padding: 5px; border-radius: 5px; display: inline-block; margin: 5px 0;">flutter build apk --release</code>
+                    </li>
+                    <li>You can find your APK file in <code>build/app/outputs/flutter-apk/app-release.apk</code>.</li>
+                    <li>To build an App Bundle (AAB) for Google Play Store upload, run: <br>
+                        <code style="background: #1e293b; padding: 5px; border-radius: 5px; display: inline-block; margin: 5px 0;">flutter build appbundle --release</code>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Build iOS -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">6</div>
+                <h2 class="step-title">Build & Release iOS App</h2>
+            </div>
+            <div class="step-content">
+                <p>To generate the final iOS app for App Store upload (Mac & Apple Developer Account Required):</p>
+                <ol style="margin-left: 20px;">
+                    <li>Open <code>ios/Runner.xcworkspace</code> in Xcode.</li>
+                    <li>Ensure you have selected your development team in the <strong>Signing & Capabilities</strong> tab.</li>
+                    <li>Check your camera and microphone permissions in <code>Info.plist</code>.</li>
+                    <li>In the terminal, run: <br>
+                        <code style="background: #1e293b; padding: 5px; border-radius: 5px; display: inline-block; margin: 5px 0;">flutter build ipa --release</code>
+                    </li>
+                    <li>Open the generated <code>.xcarchive</code> file using Xcode Organizer and distribute it to App Store Connect or TestFlight.</li>
+                </ol>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
+
+
+

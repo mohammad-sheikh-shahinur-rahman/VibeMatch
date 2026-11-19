@@ -1,0 +1,446 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeMatch - Application & Admin Panel Visual Tour</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080b11;
+            --card-bg: #0f1524;
+            --sidebar-bg: #0c101a;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.15);
+            --cyan: #06b6d4;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            z-index: 50;
+            padding: 24px;
+            overflow-y: auto;
+}
+        .logo-area {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 30px;
+            padding-bottom: 20px; border-bottom: 1px solid var(--border-color);
+        }
+        .logo-icon {
+            width: 38px; height: 38px; background: var(--accent-gradient);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; color: white; font-family: 'Outfit', sans-serif;
+        }
+        .logo-text {
+            font-size: 1.25rem;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav-section-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; margin: 14px 0 6px 8px; font-weight: 700; }
+        .nav-menu { display: flex; flex-direction: column; gap: 8px; flex-grow: 1; }
+        .nav-btn {
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+            background: transparent; border: 1px solid transparent; color: var(--text-secondary);
+            border-radius: 10px; cursor: pointer; text-decoration: none; font-size: 0.92rem; font-weight: 500;
+            transition: var(--transition-smooth); width: 100%;
+        }
+        .nav-btn:hover { color: var(--text-primary); background-color: rgba(255, 255, 255, 0.03); }
+        .nav-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        main { margin-left: 280px; flex-grow: 1; padding: 40px; max-width: 1300px; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+            border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.05em; margin-bottom: 14px;
+        }
+        .badge.primary { background-color: var(--primary-glow); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.2); }
+        .badge.emerald { background-color: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge.cyan { background-color: rgba(6, 182, 212, 0.15); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.2); }
+        .badge.amber { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.2); }
+        
+        .disclaimer-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(15, 21, 36, 1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 25px rgba(245, 158, 11, 0.05);
+        }
+        .disclaimer-box h3 { color: #f59e0b; font-size: 1.25rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .disclaimer-box p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin-bottom: 10px; }
+        .disclaimer-box ul { margin-left: 24px; color: var(--text-secondary); font-size: 0.92rem; }
+        .disclaimer-box li { margin-bottom: 6px; }
+        
+        .section-header { margin: 40px 0 20px 0; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .section-header h2 { font-size: 1.8rem; color: #fff; display: flex; align-items: center; gap: 12px; }
+        .section-header p { color: var(--text-secondary); font-size: 1rem; margin-top: 6px; }
+
+        /* Mobile Grid */
+        .mobile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+        .mobile-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+        }
+        .mobile-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.15);
+        }
+        .mobile-img-wrapper {
+            background: #000;
+            padding: 12px;
+            text-align: center;
+        }
+        .mobile-img-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
+            margin: 0 auto;
+        }
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .card-body h3 { font-size: 1.15rem; color: #fff; margin-bottom: 8px; }
+        .card-body p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; }
+
+        /* Admin Grid */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+            gap: 28px;
+            margin-bottom: 50px;
+        }
+        .admin-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+        }
+        .admin-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.15);
+        }
+        .admin-img-wrapper {
+            background: #05070c;
+            padding: 14px;
+        }
+        .admin-img-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
+        }
+
+        @media (max-width: 992px) {
+            body { flex-direction: column; }
+            aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            z-index: 50;
+            padding: 24px;
+            overflow-y: auto;
+}
+            main { margin-left: 0; padding: 20px; }
+            .admin-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <aside>
+        <div class="logo-area">
+            <img src="images/logo.png" alt="VibeMatch Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: cover;">
+            <div class="logo-text">VibeMatch</div>
+        </div>
+                        <nav class="nav-menu">
+            <a href="screens.html" class="nav-btn active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                App & Admin Screens
+            </a>
+            <div class="nav-section-title">Deployment & Setup</div>
+            <a href="index.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
+                Hosting Web Setup
+            </a>
+            <a href="vps.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                VPS Web Setup
+            </a>
+            <a href="flutter.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                Flutter App Setup
+            </a>
+            <div class="nav-section-title">Developer Guides</div>
+            <a href="backend-setup.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2" /></svg>
+                Backend API Setup
+            </a>
+            <a href="env.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                Environment (.env)
+            </a>
+            <a href="api.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Backend REST API
+            </a>
+            <a href="socket.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                Socket.IO & WebRTC
+            </a>
+            <div class="nav-section-title">Administration & Config</div>
+            <a href="admin-guide.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                Admin & Monetization
+            </a>
+            <a href="firebase.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" /></svg>
+                Firebase & Push Auth
+            </a>
+            <a href="faq.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Troubleshooting & FAQ
+            </a>
+            <a href="upgrade.html" class="nav-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                Upgrade Guide
+            </a>
+        </nav>
+    </aside>
+
+    <main>
+        <header>
+            <div class="badge primary">Product Showcase & Navigation Guide</div>
+            <h1>Application & Admin Panel Visual Tour</h1>
+            <p>Explore high-resolution screenshots and detailed functional breakdowns of all core screens in the VibeMatch mobile app and web administrative dashboard.</p>
+        </header>
+
+        <!-- Mandatory Third-Party Disclaimer Box -->
+        <div class="disclaimer-box">
+            <h3>⚠️ Important Third-Party Services Disclaimer & Usage Costs</h3>
+            <p><strong>Please Note Before Deployment:</strong> VibeMatch relies on external third-party service providers to deliver enterprise-grade performance, scalable databases, push messaging, and secure payment processing. These services are operated by independent third-party companies:</p>
+            <ul>
+                <li><strong>MongoDB Database Hosting:</strong> (e.g. MongoDB Atlas or self-hosted VPS instance). Free tier is sufficient for testing; cloud hosting usage scales according to your database size and bandwidth.</li>
+                <li><strong>Payment Gateways (Stripe, PayPal, Razorpay):</strong> Payment gateways charge standard payment processing fees per transaction according to their merchant terms.</li>
+                <li><strong>Firebase (Google LLC):</strong> Used for Phone Authentication (SMS verification), Google Sign-In, and Push Notifications. Free tiers are provided by Google, with billing applicable if SMS thresholds are exceeded.</li>
+                <li><strong>Apple App Store & Google Play Console:</strong> Publishing apps requires an Apple Developer Program membership ($99/year) and a Google Play Console developer account ($25 one-time). Standard app store commission applies to in-app purchases.</li>
+                <li><strong>WebRTC TURN Servers:</strong> Public STUN servers are included for free. If you deploy for millions of users behind strict corporate firewalls, a commercial TURN provider (e.g. Twilio, Metered, Xirsys) may incur usage-based bandwidth fees.</li>
+            </ul>
+            <p style="margin-top: 10px; font-weight: 600; color: #f59e0b;">The buyer / licensee is solely responsible for creating their own developer accounts, configuring their credentials, and covering any associated operational or usage costs incurred by external providers.</p>
+        </div>
+
+        <!-- Section 1: Mobile App Screens -->
+        <div class="section-header">
+            <h2><span style="color: var(--cyan);">📱</span> Mobile Application Screens (Flutter)</h2>
+            <p>Cross-platform Flutter application interface for Android and iOS with native WebRTC streaming, filters, and real-time interaction.</p>
+        </div>
+
+        <div class="mobile-grid">
+            <!-- Screen 1 -->
+            <div class="mobile-card">
+                <div class="mobile-img-wrapper">
+                    <img src="images/screens/01_screenshot.png" alt="Home & Matching Screen">
+                </div>
+                <div class="card-body">
+                    <div class="badge cyan">Core Flow</div>
+                    <h3>1. Home & Matching Screen</h3>
+                    <p>Live camera preview in the background, online user counter, coin balance, and one-tap instant video chat matching button.</p>
+                </div>
+            </div>
+
+            <!-- Screen 2 -->
+            <div class="mobile-card">
+                <div class="mobile-img-wrapper">
+                    <img src="images/screens/02_screenshot.png" alt="Live Video Chat Screen">
+                </div>
+                <div class="card-body">
+                    <div class="badge emerald">WebRTC P2P</div>
+                    <h3>2. Live 1-on-1 Video Chat</h3>
+                    <p>Real-time peer-to-peer video streaming with picture-in-picture local camera, instant text chat, interactive virtual gifting, and one-swipe skip.</p>
+                </div>
+            </div>
+
+            <!-- Screen 3 -->
+            <div class="mobile-card">
+                <div class="mobile-img-wrapper">
+                    <img src="images/screens/03_screenshot.png" alt="Matchmaking Filters">
+                </div>
+                <div class="card-body">
+                    <div class="badge primary">VIP Feature</div>
+                    <h3>3. Advanced Match Filters</h3>
+                    <p>Allows users to filter potential partners by gender (Female / Male / Both) or specific country regions. Can be gated behind VIP membership.</p>
+                </div>
+            </div>
+
+            <!-- Screen 4 -->
+            <div class="mobile-card">
+                <div class="mobile-img-wrapper">
+                    <img src="images/screens/04_screenshot.png" alt="Coin Store & VIP">
+                </div>
+                <div class="card-body">
+                    <div class="badge amber">Monetization</div>
+                    <h3>4. Store & VIP Memberships</h3>
+                    <p>In-app purchase store for purchasing diamond packages and VIP subscriptions via Google Play In-App Billing, Apple StoreKit, Stripe, or PayPal.</p>
+                </div>
+            </div>
+
+            <!-- Screen 5 -->
+            <div class="mobile-card">
+                <div class="mobile-img-wrapper">
+                    <img src="images/screens/05_screenshot.png" alt="Direct Messages">
+                </div>
+                <div class="card-body">
+                    <div class="badge cyan">Real-Time Chat</div>
+                    <h3>5. Direct Chat & Messages</h3>
+                    <p>Persistent Socket.IO powered direct messaging, unread notifications, audio alerts, and friend conversations with matched partners.</p>
+                </div>
+            </div>
+
+            <!-- Screen 6 -->
+            <div class="mobile-card">
+                <div class="mobile-img-wrapper">
+                    <img src="images/screens/06_screenshot.png" alt="Match History">
+                </div>
+                <div class="card-body">
+                    <div class="badge emerald">Activity Logs</div>
+                    <h3>6. Match History & Call Logs</h3>
+                    <p>Review recent matchmaking partners, re-connect with previous friends, check call durations, and send direct messages.</p>
+                </div>
+            </div>
+
+            <!-- Screen 7 -->
+            <div class="mobile-card">
+                <div class="mobile-img-wrapper">
+                    <img src="images/screens/07_screenshot.png" alt="User Profile">
+                </div>
+                <div class="card-body">
+                    <div class="badge primary">Account</div>
+                    <h3>7. User Profile & Settings</h3>
+                    <p>Customize avatar, bio, age, country flag, manage VIP badge status, view follower statistics, and adjust privacy preferences.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Admin Panel Screens -->
+        <div class="section-header">
+            <h2><span style="color: var(--emerald);">💻</span> Web Administrative Dashboard</h2>
+            <p>Comprehensive, real-time control center for platform owners to oversee analytics, users, payments, and system configurations.</p>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Admin 1 -->
+            <div class="admin-card">
+                <div class="admin-img-wrapper">
+                    <img src="images/screens/08_screenshot.png" alt="Admin Dashboard Overview">
+                </div>
+                <div class="card-body">
+                    <div class="badge primary">Telemetry</div>
+                    <h3>1. System Dashboard & Real-Time Analytics</h3>
+                    <p>Live telemetry showing online active users, active video calls, total registered accounts, platform revenue, and server health status.</p>
+                </div>
+            </div>
+
+            <!-- Admin 2 -->
+            <div class="admin-card">
+                <div class="admin-img-wrapper">
+                    <img src="images/screens/09_screenshot.png" alt="User Accounts Management">
+                </div>
+                <div class="card-body">
+                    <div class="badge emerald">User Control</div>
+                    <h3>2. User Accounts Management</h3>
+                    <p>Search, filter, view user details, modify gem/diamond balances, grant or revoke VIP memberships, and ban or unban abusive accounts.</p>
+                </div>
+            </div>
+
+            <!-- Admin 3 -->
+            <div class="admin-card">
+                <div class="admin-img-wrapper">
+                    <img src="images/screens/10_screenshot.png" alt="Reports & Safety Center">
+                </div>
+                <div class="card-body">
+                    <div class="badge amber">Safety & Moderation</div>
+                    <h3>3. Reports Moderation & Safety Center</h3>
+                    <p>Review real-time user abuse reports with submitted reasons and timestamps, take swift moderation action, or permanently ban violators.</p>
+                </div>
+            </div>
+
+            <!-- Admin 4 -->
+            <div class="admin-card">
+                <div class="admin-img-wrapper">
+                    <img src="images/screens/11_screenshot.png" alt="Payments & Coin Packages">
+                </div>
+                <div class="card-body">
+                    <div class="badge cyan">Monetization</div>
+                    <h3>4. Payment Gateways & Coin Packages</h3>
+                    <p>Configure Stripe, PayPal, and Razorpay API credentials. Create and manage diamond packages, pricing, coin bonuses, and VIP subscription tiers.</p>
+                </div>
+            </div>
+
+            <!-- Admin 5 -->
+            <div class="admin-card">
+                <div class="admin-img-wrapper">
+                    <img src="images/screens/12_screenshot.png" alt="General Settings & Branding">
+                </div>
+                <div class="card-body">
+                    <div class="badge primary">Configuration</div>
+                    <h3>5. General Settings, Branding & Auth</h3>
+                    <p>Update site name, upload custom logos and favicons, configure SEO metadata, and toggle social authentication providers (Google, Phone, Apple).</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
