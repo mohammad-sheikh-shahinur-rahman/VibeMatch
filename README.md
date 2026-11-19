@@ -1,3 +1,4 @@
+
 # VibeMatch | Random Live Video Chat & Matchmaking SAAS Platform
 
 Welcome to **VibeMatch**, a modern, high-performance real-time 1-on-1 random live video chat and matchmaking web platform. Built with **React 18**, **Node.js**, **Express**, **Socket.IO**, **WebRTC**, and **MongoDB**, VibeMatch offers a fast, interactive, and fully monetized video chat experience for spontaneous social connections.
@@ -121,4 +122,8 @@ For technical support or inquiries, please contact our team via CodeCanyon item 
 
 ---
 
-© DevSnaplix Team. All rights reserved.
+© IT Amadersomaj Inc Team. All rights reserved.
+=======
+# VibeMatch
+VibeMatch is an elite, high-performance Random Live Video Chat and Social Matchmaking platform (Azar Alternative). Built with cutting-edge real-time technologies including Flutter (Android &amp; iOS), React, Node.js, Express, Socket.IO, WebRTC, and MongoDB, VibeMatch delivers ultra-low-latency 1-on-1 video streaming,
+
